@@ -19,6 +19,11 @@
 Kotlin, Spring-boot, Redis, InfluxDB, Docker, Telegraf, Grafana, K6
 <br></br>
 
+## 테스트
+- Kotlin의 장점을 갖춘 Kotest 프레임워크를 활용하여 테스트 코드 작성
+- Testcontainers를 적용하여 애플리케이션 컨텍스트에 기반한 테스트를 간편하게 수행
+<br></br>
+
 ## 성능 테스트
 ![image](https://github.com/user-attachments/assets/a23806e4-04cf-44f9-93f1-8ad198c817cf)
 <br>
