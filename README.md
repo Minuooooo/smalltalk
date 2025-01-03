@@ -26,7 +26,7 @@ Infrastructure
 <br>
 
 ## 성능 테스트
-![image](https://github.com/user-attachments/assets/6bd69180-3397-400b-8412-6e90db7f2c63)
+![Stress_Test](https://github.com/user-attachments/assets/2da9db4b-a6a0-483c-982e-584e904a5e0e)
 <br></br>
 K6를 통해 서버에 원하는 만큼 트래픽을 발생시켜 성능에 대한 여러 지표를 확인합니다.
 <br>
