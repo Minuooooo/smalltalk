@@ -7,13 +7,13 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer
 
-
 @Configuration
 @EnableWebSocketMessageBroker
 class WebSocketConfig (
     private val inboundChannelInterceptor: InboundChannelInterceptor,
-    private val outboundChannelInterceptor: OutboundChannelInterceptor
+    private val outboundChannelInterceptor: OutboundChannelInterceptor,
 ): WebSocketMessageBrokerConfigurer {
+
     companion object {
         const val SEND_DESTINATION_PREFIX = "/rooms/chat/"
         const val SUBSCRIBE_ROOM_DESTINATION_PREFIX = "/rooms/"

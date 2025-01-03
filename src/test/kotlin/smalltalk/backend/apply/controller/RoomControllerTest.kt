@@ -1,0 +1,81 @@
+package smalltalk.backend.apply.controller
+
+import com.ninjasquad.springmockk.MockkBean
+import io.kotest.core.spec.style.FunSpec
+import io.mockk.clearAllMocks
+import io.mockk.every
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.context.annotation.Import
+import org.springframework.http.MediaType.APPLICATION_JSON
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.post
+import smalltalk.backend.application.service.RoomService
+import smalltalk.backend.apply.*
+import smalltalk.backend.exception.RoomExceptionSituationCode.DELETED
+import smalltalk.backend.exception.RoomExceptionSituationCode.FULL
+import smalltalk.backend.exception.FullRoomException
+import smalltalk.backend.exception.RoomNotFoundException
+import smalltalk.backend.presentation.controller.RoomController
+import smalltalk.backend.util.ObjectMapperClient
+import smalltalk.backend.support.spec.afterRootTest
+
+@WebMvcTest(RoomController::class)
+@Import(ObjectMapperClient::class)
+class RoomControllerTest(
+    @MockkBean
+    private val roomService: RoomService,
+    private val mockMvc: MockMvc,
+    private val client: ObjectMapperClient,
+) : FunSpec({
+
+    test("채팅방 생성 요청에 대하여 응답으로 생성된 채팅방과 멤버 정보가 반환된다") {
+        val response = createOpenResponse()
+        every { roomService.open(any()) } returns response
+        mockMvc.post(API_PREFIX) {
+            contentType = APPLICATION_JSON
+            content = getStringValue(client, createOpenRequest())
+        }.andExpect {
+            status { isCreated() }
+            content { json(getStringValue(client, response), true) }
+        }
+    }
+
+    test("모든 채팅방을 조회한다") {
+        val response = createSimpleInfoResponse()
+        every { roomService.getSimpleInfos() } returns response
+        mockMvc.get(API_PREFIX).andExpect {
+            status { isOk() }
+            content { json(getStringValue(client, response), true) }
+        }
+    }
+
+    test("채팅방 입장 요청에 대하여 응답으로 생성된 멤버 정보가 반환된다") {
+        val response = createEnterResponse()
+        every { roomService.enter(any()) } returns response
+        mockMvc.post("$API_PREFIX/$ID").andExpect {
+            status { isOk() }
+            content { json(getStringValue(client, response), true) }
+        }
+    }
+
+    test("이미 삭제된 채팅방 입장 요청에 대하여 응답으로 에러 정보가 반환된다") {
+        every { roomService.enter(any()) } throws RoomNotFoundException()
+        mockMvc.post("$API_PREFIX/$ID").andExpect {
+            status { isNotFound() }
+            content { json(getStringValue(client, createErrorResponseWhenEnter(DELETED.code)), true) }
+        }
+    }
+
+    test("가득찬 채팅방 입장 요청에 대하여 응답으로 에러 정보가 반환된다") {
+        every { roomService.enter(any()) } throws FullRoomException()
+        mockMvc.post("$API_PREFIX/$ID").andExpect {
+            status { isBadRequest() }
+            content { json(getStringValue(client, createErrorResponseWhenEnter(FULL.code)), true) }
+        }
+    }
+
+    afterRootTest {
+        clearAllMocks()
+    }
+})

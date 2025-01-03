@@ -13,8 +13,10 @@ import org.springframework.data.redis.core.StringRedisTemplate
 
 @Configuration
 class RedisConfig {
+
     @Value("\${spring.data.redis.host}")
     private lateinit var host: String
+
     @Value("\${spring.data.redis.port}")
     private lateinit var port: String
 
@@ -26,7 +28,9 @@ class RedisConfig {
 
     @Bean
     fun redisTemplate() =
-        StringRedisTemplate().apply { connectionFactory = redisConnectionFactory() }
+        StringRedisTemplate().apply {
+            connectionFactory = redisConnectionFactory()
+        }
 
     @Bean(destroyMethod = "shutdown")
     fun redissonClient(): RedissonClient =
