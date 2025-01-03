@@ -1,7 +1,6 @@
-package smalltalk.backend.apply.controller.room
+package smalltalk.backend.apply.controller
 
 import com.ninjasquad.springmockk.MockkBean
-import io.github.oshai.kotlinlogging.KotlinLogging
 import io.kotest.core.spec.style.FunSpec
 import io.mockk.clearAllMocks
 import io.mockk.every
@@ -24,11 +23,11 @@ import smalltalk.backend.support.spec.afterRootTest
 @WebMvcTest(RoomController::class)
 @Import(ObjectMapperClient::class)
 class RoomControllerTest(
-    @MockkBean private val roomService: RoomService,
+    @MockkBean
+    private val roomService: RoomService,
     private val mockMvc: MockMvc,
-    private val client: ObjectMapperClient
+    private val client: ObjectMapperClient,
 ) : FunSpec({
-    val logger = KotlinLogging.logger { }
 
     test("채팅방 생성 요청에 대하여 응답으로 생성된 채팅방과 멤버 정보가 반환된다") {
         val response = createOpenResponse()

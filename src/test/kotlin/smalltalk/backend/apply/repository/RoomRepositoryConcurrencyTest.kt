@@ -1,6 +1,5 @@
-package smalltalk.backend.apply.infrastructure.repository.room
+package smalltalk.backend.apply.repository
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
@@ -10,7 +9,7 @@ import smalltalk.backend.apply.*
 import smalltalk.backend.config.redis.RedisConfig
 import smalltalk.backend.infrastructure.repository.room.*
 import smalltalk.backend.util.jackson.ObjectMapperClient
-import smalltalk.backend.support.EnableTestContainers
+import smalltalk.backend.support.EnableTestContainer
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 
@@ -18,9 +17,10 @@ import java.util.concurrent.Executors
     classes = [RedisConfig::class, RoomRedisFunctionsLoader::class, RedissonRoomRepository::class, ObjectMapperClient::class]
 )
 @EnableConfigurationProperties(value = [RoomYamlProperties::class])
-@EnableTestContainers
-class RoomRepositoryConcurrencyTest(private val roomRepository: RoomRepository) : FunSpec({
-    val logger = KotlinLogging.logger { }
+@EnableTestContainer
+class RoomRepositoryConcurrencyTest(
+    private val roomRepository: RoomRepository,
+) : FunSpec({
 
     test("채팅방에 멤버를 동시에 추가하면 가득차야 한다") {
         val numberOfThread = MEMBER_LIMIT - 1

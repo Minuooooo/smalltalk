@@ -1,6 +1,5 @@
-package smalltalk.backend.apply.integration.room
+package smalltalk.backend.apply.integration
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
@@ -20,17 +19,16 @@ import smalltalk.backend.presentation.dto.room.request.OpenRequest
 import smalltalk.backend.presentation.dto.room.response.EnterResponse
 import smalltalk.backend.presentation.dto.room.response.OpenResponse
 import smalltalk.backend.presentation.dto.room.response.SimpleInfoResponse
-import smalltalk.backend.support.EnableTestContainers
+import smalltalk.backend.support.EnableTestContainer
 import smalltalk.backend.support.spec.afterRootTest
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableConfigurationProperties(value = [RoomYamlProperties::class])
-@EnableTestContainers
+@EnableTestContainer
 class RoomControllerIntegrationTest(
     private val roomRepository: RoomRepository,
-    private val template: TestRestTemplate
+    private val template: TestRestTemplate,
 ) : FunSpec({
-    val logger = KotlinLogging.logger { }
 
     test("채팅방 생성 요청에 대하여 응답으로 생성된 채팅방과 멤버 정보가 반환된다") {
         template.postForEntity<OpenResponse>(API_PREFIX, OpenRequest(NAME)).run {

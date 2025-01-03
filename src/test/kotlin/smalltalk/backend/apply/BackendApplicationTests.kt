@@ -2,10 +2,10 @@ package smalltalk.backend.apply
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
-import smalltalk.backend.support.EnableTestContainers
+import smalltalk.backend.support.EnableTestContainer
 
 @SpringBootTest
-@EnableTestContainers
+@EnableTestContainer
 class BackendApplicationTests {
 
 	@Test

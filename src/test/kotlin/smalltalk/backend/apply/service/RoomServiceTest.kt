@@ -1,6 +1,5 @@
-package smalltalk.backend.apply.service.room
+package smalltalk.backend.apply.service
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
@@ -13,9 +12,9 @@ import smalltalk.backend.infrastructure.repository.room.RoomRepository
 import smalltalk.backend.support.spec.afterRootTest
 
 class RoomServiceTest : BehaviorSpec({
+
     val roomRepository = mockk<RoomRepository>()
     val roomService = RoomService(roomRepository)
-    val logger = KotlinLogging.logger { }
 
     Given("생성할 채팅방에 대한 정보가 있는 경우") {
         val room = create()

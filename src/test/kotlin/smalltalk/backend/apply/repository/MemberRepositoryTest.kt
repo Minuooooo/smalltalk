@@ -1,6 +1,5 @@
-package smalltalk.backend.apply.infrastructure.repository.member
+package smalltalk.backend.apply.repository
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import io.kotest.core.spec.style.ExpectSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSize
@@ -14,14 +13,15 @@ import smalltalk.backend.config.redis.RedisConfig
 import smalltalk.backend.infrastructure.repository.member.MemberRepository
 import smalltalk.backend.infrastructure.repository.member.RedissonMemberRepository
 import smalltalk.backend.infrastructure.repository.member.getById
-import smalltalk.backend.support.EnableTestContainers
+import smalltalk.backend.support.EnableTestContainer
 import smalltalk.backend.support.spec.afterRootTest
 import smalltalk.backend.util.jackson.ObjectMapperClient
 
 @SpringBootTest(classes = [RedisConfig::class, RedissonMemberRepository::class, ObjectMapperClient::class])
-@EnableTestContainers
-class MemberRepositoryTest(private val memberRepository: MemberRepository) : ExpectSpec({
-    val logger = KotlinLogging.logger { }
+@EnableTestContainer
+class MemberRepositoryTest(
+    private val memberRepository: MemberRepository,
+) : ExpectSpec({
 
     expect("채팅방 멤버를 저장한다") {
         val savedMember = memberRepository.save(MEMBER_SESSION_ID, MEMBER_INIT.toLong(), ID)

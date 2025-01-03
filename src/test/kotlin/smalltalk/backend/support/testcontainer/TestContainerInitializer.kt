@@ -1,11 +1,12 @@
-package smalltalk.backend.support.testcontainers
+package smalltalk.backend.support.testcontainer
 
 import org.springframework.boot.test.util.TestPropertyValues
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
 import org.testcontainers.containers.GenericContainer
 
-class TestContainersInitializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
+class TestContainerInitializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
+
     companion object {
         private const val REDIS_IMAGE = "redis:latest"
         private const val REDIS_EXPOSE_PORT = 6379

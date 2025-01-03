@@ -1,6 +1,5 @@
-package smalltalk.backend.apply.integration.websocket
+package smalltalk.backend.apply.integration
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.channels.Channel
@@ -29,7 +28,7 @@ import smalltalk.backend.presentation.dto.message.Error
 import smalltalk.backend.presentation.dto.message.System
 import smalltalk.backend.presentation.dto.message.SystemTextPostfix
 import smalltalk.backend.util.jackson.ObjectMapperClient
-import smalltalk.backend.support.EnableTestContainers
+import smalltalk.backend.support.EnableTestContainer
 import smalltalk.backend.support.spec.afterRootTest
 
 /**
@@ -39,14 +38,15 @@ import smalltalk.backend.support.spec.afterRootTest
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableConfigurationProperties(value = [RoomYamlProperties::class])
-@EnableTestContainers
+@EnableTestContainer
 class WebSocketIntegrationTest(
-    @LocalServerPort private val port: Int,
+    @LocalServerPort
+    private val port: Int,
     private val roomRepository: RoomRepository,
     private val memberRepository: MemberRepository,
-    private val mapperClient: ObjectMapperClient
+    private val mapperClient: ObjectMapperClient,
 ) : FunSpec({
-    val logger = KotlinLogging.logger { }
+
     val url = "ws://localhost:$port${WebSocketConfig.STOMP_ENDPOINT}"
     val client = StompClient(StandardWebSocketClient().asKrossbowWebSocketClient())
 
@@ -147,6 +147,7 @@ class WebSocketIntegrationTest(
         memberRepository.deleteAll()
     }
 }) {
+
     @Serializable
     private data class TestChatMessage(
         val sender: String,
