@@ -17,19 +17,41 @@ const val MEMBER_LIMIT = 100
 const val MEMBER_SESSION_ID = "session-id"
 const val API_PREFIX = "/api/rooms"
 
-fun create(id: Long = ID, name: String = NAME) = Room(id, name, MEMBER_INIT)
+fun create(
+    id: Long = ID,
+    name: String = NAME,
+) = Room(
+    id,
+    name,
+    MEMBER_INIT,
+)
 
 fun createRooms() = (1L..3L).map { create(it, NAME + it) }
 
-fun createOpenRequest() = OpenRequest(NAME)
+fun createOpenRequest() = OpenRequest(
+    NAME,
+)
 
-fun createOpenResponse() = OpenResponse(ID, MEMBER_INIT.toLong())
+fun createOpenResponse() = OpenResponse(
+    ID,
+    MEMBER_INIT.toLong(),
+)
 
-fun createSimpleInfoResponse() = (1L..3L).map { SimpleInfoResponse(it, NAME + it, MEMBER_INIT) }
+fun createSimpleInfoResponse() = (1L..3L).map {
+    SimpleInfoResponse(
+        it,
+        NAME + it,
+        MEMBER_INIT,
+    )
+}
 
-fun createEnterResponse() = EnterResponse((MEMBER_INIT + 1).toLong())
+fun createEnterResponse() = EnterResponse(
+    (MEMBER_INIT + 1).toLong(),
+)
 
-fun createErrorResponseWhenEnter(code: String) = Error(code)
+fun createErrorResponseWhenEnter(code: String) = Error(
+    code,
+)
 
 fun getDestination(id: Long) = WebSocketConfig.SUBSCRIBE_ROOM_DESTINATION_PREFIX + id
 

@@ -31,7 +31,12 @@ class RoomControllerIntegrationTest(
 ) : FunSpec({
 
     test("채팅방 생성 요청에 대하여 응답으로 생성된 채팅방과 멤버 정보가 반환된다") {
-        template.postForEntity<OpenResponse>(API_PREFIX, OpenRequest(NAME)).run {
+        template.postForEntity<OpenResponse>(
+            API_PREFIX,
+            OpenRequest(
+                NAME,
+            )
+        ).run {
             statusCode shouldBe CREATED
             body?.run {
                 id shouldBe ID

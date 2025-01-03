@@ -39,6 +39,7 @@ class RoomRepositoryTest(
 
     context("채팅방 조회") {
         repeat(3) { roomRepository.save(NAME + it) }
+
         expect("id와 일치하는 채팅방을 조회한다") {
             roomRepository.findById(ID)?.run {
                 id shouldBe ID
@@ -46,6 +47,7 @@ class RoomRepositoryTest(
                 numberOfMember shouldBe MEMBER_INIT
             }
         }
+
         expect("모든 채팅방을 조회한다") {
             roomRepository.findAll() shouldHaveSize 3
         }
@@ -63,15 +65,18 @@ class RoomRepositoryTest(
 
     context("채팅방 멤버 추가") {
         val id = roomRepository.save(NAME).id
+
         expect("추가된 멤버의 id를 반환한다") {
             roomRepository.run {
                 repeat(MEMBER_LIMIT - MEMBER_INIT) { addMember(id) }
                 getById(id).numberOfMember shouldBe MEMBER_LIMIT
             }
         }
+
         expect("존재하지 않는 예외가 발생한다") {
             shouldThrow<RoomNotFoundException> { roomRepository.addMember(2L) }
         }
+
         expect("가득찬 예외가 발생한다") {
             shouldThrow<FullRoomException> { roomRepository.addMember(id) }
         }
@@ -80,15 +85,18 @@ class RoomRepositoryTest(
     context("채팅방 멤버 삭제") {
         val id = roomRepository.save(NAME).id
         val memberIdToDelete = roomRepository.addMember(id)
+
         expect("2명 이상 존재하면 멤버를 삭제한다") {
             roomRepository.deleteMember(id, memberIdToDelete)?.numberOfMember shouldBe MEMBER_INIT
         }
+
         expect("1명만 존재하면 채팅방을 삭제한다") {
             roomRepository.run {
                 deleteMember(id, MEMBER_INIT.toLong())
                 findById(id).shouldBeNull()
             }
         }
+
         expect("예외가 발생한다") {
             shouldThrow<RoomNotFoundException> { roomRepository.deleteMember(id, MEMBER_INIT.toLong()) }
         }

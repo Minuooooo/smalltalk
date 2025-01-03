@@ -20,6 +20,7 @@ class RoomServiceTest : BehaviorSpec({
         val room = create()
         val request = createOpenRequest()
         every { roomRepository.save(any()) } returns room
+
         When("채팅방을 생성하면") {
             val response = roomService.open(request)
             Then("생성된 채팅방에 대한 정보를 반환한다") {
@@ -34,6 +35,7 @@ class RoomServiceTest : BehaviorSpec({
     Given("채팅방이 여러개 존재하는 경우") {
         val rooms = createRooms()
         every { roomRepository.findAll() } returns rooms
+
         When("채팅방 목록을 조회하면") {
             val simpleInfos = roomService.getSimpleInfos()
             Then("모든 채팅방을 반환한다") {
@@ -46,6 +48,7 @@ class RoomServiceTest : BehaviorSpec({
         val room = create()
         val enteredMemberId = 2L
         every { roomRepository.addMember(any()) } returns enteredMemberId
+
         When("채팅방에 입장하면") {
             val response = roomService.enter(room.id.toString())
             Then("채팅방 멤버 정보를 반환한다") {

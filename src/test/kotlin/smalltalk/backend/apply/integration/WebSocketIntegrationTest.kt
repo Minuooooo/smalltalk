@@ -56,15 +56,27 @@ class WebSocketIntegrationTest(
         val messageChannel = Channel<System>()
         val sessionToOpenRoom = client.connect(url).withJsonConversions()
         launch {
-            sessionToOpenRoom.subscribe(createHeaders(destination, OPEN.name, room.numberOfMember.toString()))
-                .take(3)
-                .collect { messageChannel.send(getExpectedValue<System>(mapperClient, it.bodyAsText)) }
+            sessionToOpenRoom.subscribe(
+                createHeaders(
+                    destination,
+                    OPEN.name,
+                    room.numberOfMember.toString(),
+                )
+            ).take(3).collect { messageChannel.send(getExpectedValue<System>(mapperClient, it.bodyAsText)) }
         }
+
         val openRoomMessage = messageChannel.receive()
         val enteredMemberId = roomRepository.addMember(room.id)
         val enteredMemberNickname = getNickname(enteredMemberId)
         val sessionToEnterRoom = client.connect(url)
-        sessionToEnterRoom.subscribe(createHeaders(destination, ENTER.name, enteredMemberId.toString())).first()
+        sessionToEnterRoom.subscribe(
+            createHeaders(
+                destination,
+                ENTER.name,
+                enteredMemberId.toString(),
+            )
+        ).first()
+
         openRoomMessage.run {
             numberOfMember shouldBe MEMBER_INIT
             text shouldBe (room.name + SystemTextPostfix.OPEN)
@@ -90,7 +102,7 @@ class WebSocketIntegrationTest(
                 createHeaders(
                     "${WebSocketConfig.SUBSCRIBE_ROOM_DESTINATION_PREFIX}abc",
                     OPEN.name,
-                    room.numberOfMember.toString()
+                    room.numberOfMember.toString(),
                 )
             ).first().bodyAsText
         ).code shouldBe ROOM.code
@@ -102,7 +114,13 @@ class WebSocketIntegrationTest(
         val session = client.connect(url).withJsonConversions()
         getExpectedValue<Error>(
             mapperClient,
-            session.subscribe(createHeaders(getDestination(room.id), OPEN.name, null)).first().bodyAsText
+            session.subscribe(
+                createHeaders(
+                    getDestination(room.id),
+                    OPEN.name,
+                    null,
+                )
+            ).first().bodyAsText
         ).code shouldBe MEMBER.code
         session.disconnect()
     }
@@ -112,7 +130,13 @@ class WebSocketIntegrationTest(
         val session = client.connect(url).withJsonConversions()
         getExpectedValue<Error>(
             mapperClient,
-            session.subscribe(createHeaders(getDestination(room.id), null, room.numberOfMember.toString())).first().bodyAsText
+            session.subscribe(
+                createHeaders(
+                    getDestination(room.id),
+                    null,
+                    room.numberOfMember.toString(),
+                )
+            ).first().bodyAsText
         ).code shouldBe TYPE.code
         session.disconnect()
     }
@@ -123,18 +147,27 @@ class WebSocketIntegrationTest(
         val messageChannel = Channel<String>()
         val session = client.connect(url).withJsonConversions()
         launch {
-            session.subscribe(createHeaders(getDestination(room.id), OPEN.name, enteredMemberId.toString()))
-                .take(2)
-                .collect { messageChannel.send(it.bodyAsText) }
+            session.subscribe(
+                createHeaders(
+                    getDestination(room.id),
+                    OPEN.name,
+                    enteredMemberId.toString(),
+                )
+            ).take(2).collect { messageChannel.send(it.bodyAsText) }
         }
+
         messageChannel.receive()
         val sender = getNickname(enteredMemberId)
         val text = "안녕하세요!"
         session.convertAndSend(
             WebSocketConfig.SEND_DESTINATION_PREFIX + room.id,
-            TestChatMessage(sender, text),
+            TestChatMessage(
+                sender,
+                text,
+            ),
             TestChatMessage.serializer()
         )
+
         getExpectedValue<Chat>(mapperClient, messageChannel.receive()).let {
             it.sender shouldBe sender
             it.text shouldBe text
@@ -151,6 +184,6 @@ class WebSocketIntegrationTest(
     @Serializable
     private data class TestChatMessage(
         val sender: String,
-        val text: String
+        val text: String,
     )
 }
