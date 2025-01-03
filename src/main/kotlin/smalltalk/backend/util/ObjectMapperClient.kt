@@ -1,10 +1,13 @@
-package smalltalk.backend.util.jackson
+package smalltalk.backend.util
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.stereotype.Component
 
 @Component
-class ObjectMapperClient(private val objectMapper: ObjectMapper) {
+class ObjectMapperClient(
+    private val objectMapper: ObjectMapper,
+) {
+
     fun getStringValue(value: Any): String = objectMapper.writeValueAsString(value)
 
     fun getByteArrayValue(value: Any): ByteArray = objectMapper.writeValueAsBytes(value)

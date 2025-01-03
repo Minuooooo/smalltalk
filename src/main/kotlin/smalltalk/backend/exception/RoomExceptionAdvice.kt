@@ -1,18 +1,15 @@
-package smalltalk.backend.exception.room.advice
+package smalltalk.backend.exception
 
 import org.springframework.http.HttpStatus.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
-import smalltalk.backend.exception.room.advice.RoomExceptionSituationCode.*
-import smalltalk.backend.exception.room.situation.FullRoomException
-import smalltalk.backend.exception.room.situation.RoomIdNotGeneratedException
-import smalltalk.backend.exception.room.situation.RoomNotFoundException
+import smalltalk.backend.exception.RoomExceptionSituationCode.*
 import smalltalk.backend.presentation.dto.message.Error
-
 
 @RestControllerAdvice
 class RoomExceptionAdvice {
+
     @ExceptionHandler(RoomIdNotGeneratedException::class)
     fun roomIdNotGeneratedException() = ResponseEntity.status(INTERNAL_SERVER_ERROR).body(Error(COMMON.code))
 

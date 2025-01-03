@@ -4,11 +4,11 @@ import smalltalk.backend.application.websocket.RoomEventListener
 import smalltalk.backend.config.websocket.WebSocketConfig
 import smalltalk.backend.domain.room.Room
 import smalltalk.backend.presentation.dto.message.Error
-import smalltalk.backend.presentation.dto.room.request.OpenRequest
-import smalltalk.backend.presentation.dto.room.response.EnterResponse
-import smalltalk.backend.presentation.dto.room.response.OpenResponse
-import smalltalk.backend.presentation.dto.room.response.SimpleInfoResponse
-import smalltalk.backend.util.jackson.ObjectMapperClient
+import smalltalk.backend.presentation.dto.room.OpenRequest
+import smalltalk.backend.presentation.dto.room.EnterResponse
+import smalltalk.backend.presentation.dto.room.OpenResponse
+import smalltalk.backend.presentation.dto.room.SimpleInfoResponse
+import smalltalk.backend.util.ObjectMapperClient
 
 const val ID = 1L
 const val NAME = "room"

@@ -6,9 +6,9 @@ import io.kotest.matchers.shouldBe
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
-import smalltalk.backend.application.service.room.RoomService
+import smalltalk.backend.application.service.RoomService
 import smalltalk.backend.apply.*
-import smalltalk.backend.infrastructure.repository.room.RoomRepository
+import smalltalk.backend.domain.room.RoomRepository
 import smalltalk.backend.support.spec.afterRootTest
 
 class RoomServiceTest : BehaviorSpec({

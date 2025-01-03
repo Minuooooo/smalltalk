@@ -1,13 +1,13 @@
-package smalltalk.backend.util.message
+package smalltalk.backend.application
 
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Component
 
-
 @Component
 class SimpleMessageBroker(
-    private val template: SimpMessagingTemplate
-): MessageBroker {
+    private val template: SimpMessagingTemplate,
+) : MessageBroker {
+
     override fun send(topic: String, message: Any) {
         template.convertAndSend(topic, message)
     }

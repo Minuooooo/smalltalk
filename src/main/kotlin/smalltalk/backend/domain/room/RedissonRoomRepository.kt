@@ -1,36 +1,39 @@
-package smalltalk.backend.infrastructure.repository.room
+package smalltalk.backend.domain.room
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.redisson.api.FunctionMode
 import org.redisson.api.FunctionResult
 import org.redisson.api.RedissonClient
 import org.redisson.api.options.KeysScanParams
 import org.springframework.stereotype.Repository
-import smalltalk.backend.domain.room.Room
-import smalltalk.backend.exception.room.advice.RoomExceptionSituationCode.*
-import smalltalk.backend.exception.room.situation.FullRoomException
-import smalltalk.backend.exception.room.situation.RoomNotFoundException
-import smalltalk.backend.util.jackson.ObjectMapperClient
+import smalltalk.backend.config.property.RoomProperties
+import smalltalk.backend.exception.RoomExceptionSituationCode.*
+import smalltalk.backend.exception.FullRoomException
+import smalltalk.backend.exception.RoomNotFoundException
+import smalltalk.backend.util.ObjectMapperClient
 
 @Repository
 class RedissonRoomRepository(
     private val redisson: RedissonClient,
     private val objectMapper: ObjectMapperClient,
-    properties: RoomProperties
+    properties: RoomProperties,
 ) : RoomRepository {
-    private val logger = KotlinLogging.logger { }
+
     private val keyPrefix = properties.getKeyPrefix()
     private val keyOfCounter = properties.getKeyOfCounter()
     private val keyPostfixOfProvider = properties.getKeyPostfixOfProvider()
     private val functionKeyOfAddMember = properties.getLibraryFunctionKeyOfAddMember()
     private val functionKeyOfDeleteMember = properties.getLibraryFunctionKeyOfDeleteMember()
-    private val keyPattern = "$keyPrefix*[^a-z]"
     private val initNumberOfMember = properties.getInitNumberOfMember()
     private val limitNumberOfMember = properties.getLimitNumberOfMember()
+    private val keyPattern = "$keyPrefix*[^a-z]"
 
     override fun save(name: String): Room {
         val generatedId = generateId()
-        val roomToSave = Room(generatedId, name, initNumberOfMember)
+        val roomToSave = Room(
+            generatedId,
+            name,
+            initNumberOfMember,
+        )
         redisson.getBucket<String>(keyPrefix + generatedId).set(objectMapper.getStringValue(roomToSave))
         return roomToSave
     }

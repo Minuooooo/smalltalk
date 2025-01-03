@@ -1,23 +1,24 @@
-package smalltalk.backend.infrastructure.repository.room
+package smalltalk.backend.domain.room
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.annotation.PostConstruct
 import jakarta.annotation.PreDestroy
 import org.redisson.api.RedissonClient
 import org.springframework.core.env.Environment
 import org.springframework.stereotype.Component
+import smalltalk.backend.config.property.RoomProperties
 
 @Component
 class RoomRedisFunctionsLoader(
     private val redisson: RedissonClient,
     private val environment: Environment,
-    properties: RoomProperties
+    properties: RoomProperties,
 ) {
-    private val logger = KotlinLogging.logger { }
+
     private val libraryNameOfAddMember = properties.getLibraryNameOfAddMember()
     private val libraryNameOfDeleteMember = properties.getLibraryNameOfDeleteMember()
     private val keyOfAddMember = "'${properties.getLibraryFunctionKeyOfAddMember()}'"
     private val keyofDeleteMember = "'${properties.getLibraryFunctionKeyOfDeleteMember()}'"
+
     private val functionOfAddMember = """
         function(keys, args)
             local value = redis.call("get", keys[1])
@@ -37,6 +38,7 @@ class RoomRedisFunctionsLoader(
             return tostring(memberId)
         end
     """
+
     private val functionOfDeleteMember = """
         function(keys, args)
             local value = redis.call("get", keys[1])

@@ -1,6 +1,5 @@
 package smalltalk.backend.application.websocket
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.event.EventListener
 import org.springframework.messaging.MessageChannel
@@ -13,32 +12,33 @@ import org.springframework.web.socket.messaging.SessionUnsubscribeEvent
 import smalltalk.backend.application.websocket.MessageHeader.*
 import smalltalk.backend.application.websocket.SystemType.*
 import smalltalk.backend.config.websocket.WebSocketConfig
-import smalltalk.backend.exception.room.situation.DOESNT_EXIST_HEADER_MESSAGE_PREFIX
-import smalltalk.backend.exception.room.situation.DoesntExistHeaderException
-import smalltalk.backend.infrastructure.repository.member.MemberRepository
-import smalltalk.backend.infrastructure.repository.room.RoomRepository
-import smalltalk.backend.infrastructure.repository.room.getById
+import smalltalk.backend.exception.DOESNT_EXIST_HEADER_MESSAGE_PREFIX
+import smalltalk.backend.exception.DoesntExistHeaderException
+import smalltalk.backend.domain.member.MemberRepository
+import smalltalk.backend.domain.room.RoomRepository
+import smalltalk.backend.domain.room.getById
 import smalltalk.backend.presentation.dto.message.Error
 import smalltalk.backend.presentation.dto.message.System
 import smalltalk.backend.presentation.dto.message.SystemTextPostfix
-import smalltalk.backend.util.jackson.ObjectMapperClient
-import smalltalk.backend.util.message.MessageBroker
+import smalltalk.backend.util.ObjectMapperClient
+import smalltalk.backend.application.MessageBroker
 
 @Component
 class RoomEventListener(
-    @Qualifier("clientOutboundChannel") private val outboundChannel: MessageChannel,
+    @Qualifier("clientOutboundChannel")
+    private val outboundChannel: MessageChannel,
     private val roomRepository: RoomRepository,
     private val memberRepository: MemberRepository,
     private val broker: MessageBroker,
-    private val mapper: ObjectMapperClient
+    private val mapper: ObjectMapperClient,
 ) {
+
     companion object {
         const val MEMBER_NICKNAME_PREFIX = "익명"
         private const val DESTINATION_PATTERN = "^${WebSocketConfig.SUBSCRIBE_ROOM_DESTINATION_PREFIX}[0-9]+$"
         private const val ROOM_ID_START_INDEX = 7
         private const val SUBSCRIBE_COMMON_EXCEPTION_CODE = "600"
     }
-    private val logger = KotlinLogging.logger { }
 
     @EventListener
     private fun handleSubscribe(event: SessionSubscribeEvent) {

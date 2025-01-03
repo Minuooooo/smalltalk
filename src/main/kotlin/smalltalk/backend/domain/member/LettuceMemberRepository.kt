@@ -1,24 +1,27 @@
-package smalltalk.backend.infrastructure.repository.member
+package smalltalk.backend.domain.member
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.redis.core.StringRedisTemplate
-import smalltalk.backend.domain.member.Member
-import smalltalk.backend.util.jackson.ObjectMapperClient
+import smalltalk.backend.util.ObjectMapperClient
 
-//@Repository
+@Deprecated(message = "Doesn't use anymore", replaceWith = ReplaceWith("RedissonMemberRepository"))
 class LettuceMemberRepository(
     private val template: StringRedisTemplate,
-    private val client: ObjectMapperClient
+    private val client: ObjectMapperClient,
 ) : MemberRepository {
-    private val logger = KotlinLogging.logger { }
-    private val operations = template.opsForValue()
+
     companion object {
         private const val MEMBER_KEY_PREFIX = "room:member:"
         private const val MEMBER_KEY_PATTERN = "$MEMBER_KEY_PREFIX*"
     }
 
+    private val operations = template.opsForValue()
+
     override fun save(sessionId: String, id: Long, roomId: Long): Member {
-        val memberToSave = Member(sessionId, id, roomId)
+        val memberToSave = Member(
+            sessionId,
+            id,
+            roomId,
+        )
         operations[createKey(sessionId)] = client.getStringValue(memberToSave)
         return memberToSave
     }

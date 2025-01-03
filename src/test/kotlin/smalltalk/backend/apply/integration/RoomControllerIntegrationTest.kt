@@ -10,15 +10,15 @@ import org.springframework.boot.test.web.client.getForEntity
 import org.springframework.boot.test.web.client.postForEntity
 import org.springframework.http.HttpStatus.*
 import smalltalk.backend.apply.*
-import smalltalk.backend.exception.room.advice.RoomExceptionSituationCode.DELETED
-import smalltalk.backend.exception.room.advice.RoomExceptionSituationCode.FULL
-import smalltalk.backend.infrastructure.repository.room.RoomRepository
-import smalltalk.backend.infrastructure.repository.room.RoomYamlProperties
+import smalltalk.backend.exception.RoomExceptionSituationCode.DELETED
+import smalltalk.backend.exception.RoomExceptionSituationCode.FULL
+import smalltalk.backend.domain.room.RoomRepository
+import smalltalk.backend.config.property.RoomYamlProperties
 import smalltalk.backend.presentation.dto.message.Error
-import smalltalk.backend.presentation.dto.room.request.OpenRequest
-import smalltalk.backend.presentation.dto.room.response.EnterResponse
-import smalltalk.backend.presentation.dto.room.response.OpenResponse
-import smalltalk.backend.presentation.dto.room.response.SimpleInfoResponse
+import smalltalk.backend.presentation.dto.room.OpenRequest
+import smalltalk.backend.presentation.dto.room.EnterResponse
+import smalltalk.backend.presentation.dto.room.OpenResponse
+import smalltalk.backend.presentation.dto.room.SimpleInfoResponse
 import smalltalk.backend.support.EnableTestContainer
 import smalltalk.backend.support.spec.afterRootTest
 

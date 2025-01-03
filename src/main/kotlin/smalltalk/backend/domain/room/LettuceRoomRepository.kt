@@ -1,19 +1,18 @@
-package smalltalk.backend.infrastructure.repository.room
+package smalltalk.backend.domain.room
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.redis.core.ScanOptions
 import org.springframework.data.redis.core.StringRedisTemplate
-import smalltalk.backend.domain.room.Room
-import smalltalk.backend.exception.room.situation.FullRoomException
-import smalltalk.backend.exception.room.situation.RoomIdNotGeneratedException
-import smalltalk.backend.exception.room.situation.RoomNotFoundException
-import smalltalk.backend.util.jackson.ObjectMapperClient
+import smalltalk.backend.exception.FullRoomException
+import smalltalk.backend.exception.RoomIdNotGeneratedException
+import smalltalk.backend.exception.RoomNotFoundException
+import smalltalk.backend.util.ObjectMapperClient
 
 @Deprecated(message = "Doesn't use anymore", replaceWith = ReplaceWith("RedissonRoomRepository"))
 class LettuceRoomRepository(
     private val redisTemplate: StringRedisTemplate,
-    private val objectMapper: ObjectMapperClient
+    private val objectMapper: ObjectMapperClient,
 ) : RoomRepository {
+
     companion object {
         private const val KEY_PREFIX = "room:"
         private const val COUNTER_KEY = "${KEY_PREFIX}counter"
@@ -23,12 +22,16 @@ class LettuceRoomRepository(
         private const val MEMBER_INIT = 1
         private const val MEMBER_LIMIT = 100
     }
-    private val logger = KotlinLogging.logger { }
+
     private val valueOperations = redisTemplate.opsForValue()
 
     override fun save(name: String): Room {
         val generatedId = generateId()
-        val roomToSave = Room(generatedId, name, MEMBER_INIT)
+        val roomToSave = Room(
+            generatedId,
+            name,
+            MEMBER_INIT,
+        )
         valueOperations[KEY_PREFIX + generatedId] = objectMapper.getStringValue(roomToSave)
         return roomToSave
     }
@@ -55,7 +58,13 @@ class LettuceRoomRepository(
                     checkFull(room)
                     multi()
                     memberId = (room.numberOfMember + 1).toLong()
-                    stringCommands()[byteKey] = objectMapper.getByteArrayValue(Room(room.id, room.name, memberId.toInt()))
+                    stringCommands()[byteKey] = objectMapper.getByteArrayValue(
+                        Room(
+                            room.id,
+                            room.name,
+                            memberId.toInt(),
+                        )
+                    )
                     if (!values.isNullOrEmpty()) {
                         listCommands().lPop(byteKeyOfProvider)
                         memberId = getExpectedValue<Long>(values[0])
@@ -82,7 +91,11 @@ class LettuceRoomRepository(
                         room = null
                     }
                     else {
-                        val updatedRoom = Room(foundRoom.id, foundRoom.name, foundRoom.numberOfMember - 1)
+                        val updatedRoom = Room(
+                            foundRoom.id,
+                            foundRoom.name,
+                            foundRoom.numberOfMember - 1,
+                        )
                         stringCommands()[byteKey] = objectMapper.getByteArrayValue(updatedRoom)
                         listCommands().rPushX(byteKeyOfProvider, objectMapper.getByteArrayValue(id))
                         room = updatedRoom

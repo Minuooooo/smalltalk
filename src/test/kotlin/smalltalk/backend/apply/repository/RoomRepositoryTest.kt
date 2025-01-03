@@ -8,13 +8,17 @@ import io.kotest.matchers.shouldBe
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest
 import smalltalk.backend.apply.*
+import smalltalk.backend.config.property.RoomYamlProperties
 import smalltalk.backend.config.redis.RedisConfig
-import smalltalk.backend.exception.room.situation.FullRoomException
-import smalltalk.backend.exception.room.situation.RoomNotFoundException
-import smalltalk.backend.infrastructure.repository.room.*
+import smalltalk.backend.exception.FullRoomException
+import smalltalk.backend.exception.RoomNotFoundException
+import smalltalk.backend.domain.room.RedissonRoomRepository
+import smalltalk.backend.domain.room.RoomRedisFunctionsLoader
+import smalltalk.backend.domain.room.RoomRepository
+import smalltalk.backend.domain.room.getById
 import smalltalk.backend.support.EnableTestContainer
 import smalltalk.backend.support.spec.afterRootTest
-import smalltalk.backend.util.jackson.ObjectMapperClient
+import smalltalk.backend.util.ObjectMapperClient
 
 @SpringBootTest(
     classes = [RedisConfig::class, RoomRedisFunctionsLoader::class, RedissonRoomRepository::class, ObjectMapperClient::class]

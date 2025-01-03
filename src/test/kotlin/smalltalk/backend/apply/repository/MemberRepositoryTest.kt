@@ -10,12 +10,12 @@ import smalltalk.backend.apply.ID
 import smalltalk.backend.apply.MEMBER_INIT
 import smalltalk.backend.apply.MEMBER_SESSION_ID
 import smalltalk.backend.config.redis.RedisConfig
-import smalltalk.backend.infrastructure.repository.member.MemberRepository
-import smalltalk.backend.infrastructure.repository.member.RedissonMemberRepository
-import smalltalk.backend.infrastructure.repository.member.getById
+import smalltalk.backend.domain.member.MemberRepository
+import smalltalk.backend.domain.member.RedissonMemberRepository
+import smalltalk.backend.domain.member.getById
 import smalltalk.backend.support.EnableTestContainer
 import smalltalk.backend.support.spec.afterRootTest
-import smalltalk.backend.util.jackson.ObjectMapperClient
+import smalltalk.backend.util.ObjectMapperClient
 
 @SpringBootTest(classes = [RedisConfig::class, RedissonMemberRepository::class, ObjectMapperClient::class])
 @EnableTestContainer
