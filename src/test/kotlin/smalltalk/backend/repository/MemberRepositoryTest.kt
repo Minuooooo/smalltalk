@@ -1,4 +1,4 @@
-package smalltalk.backend.apply.repository
+package smalltalk.backend.repository
 
 import io.kotest.core.spec.style.ExpectSpec
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -6,9 +6,9 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import org.springframework.boot.test.context.SpringBootTest
-import smalltalk.backend.apply.ID
-import smalltalk.backend.apply.MEMBER_INIT
-import smalltalk.backend.apply.MEMBER_SESSION_ID
+import smalltalk.backend.ID
+import smalltalk.backend.MEMBER_INIT
+import smalltalk.backend.MEMBER_SESSION_ID
 import smalltalk.backend.config.redis.RedisConfig
 import smalltalk.backend.domain.member.MemberRepository
 import smalltalk.backend.domain.member.RedissonMemberRepository

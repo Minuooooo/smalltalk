@@ -1,4 +1,4 @@
-package smalltalk.backend.apply.controller
+package smalltalk.backend.controller
 
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.FunSpec
@@ -10,8 +10,8 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
+import smalltalk.backend.*
 import smalltalk.backend.application.service.RoomService
-import smalltalk.backend.apply.*
 import smalltalk.backend.exception.RoomExceptionSituationCode.DELETED
 import smalltalk.backend.exception.RoomExceptionSituationCode.FULL
 import smalltalk.backend.exception.FullRoomException

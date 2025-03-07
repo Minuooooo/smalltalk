@@ -1,4 +1,4 @@
-package smalltalk.backend.apply.service
+package smalltalk.backend.service
 
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldHaveSize
@@ -7,7 +7,9 @@ import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import smalltalk.backend.application.service.RoomService
-import smalltalk.backend.apply.*
+import smalltalk.backend.create
+import smalltalk.backend.createOpenRequest
+import smalltalk.backend.createRooms
 import smalltalk.backend.domain.room.RoomRepository
 import smalltalk.backend.support.spec.afterRootTest
 

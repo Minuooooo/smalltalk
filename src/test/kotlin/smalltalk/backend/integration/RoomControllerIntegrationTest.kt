@@ -1,4 +1,4 @@
-package smalltalk.backend.apply.integration
+package smalltalk.backend.integration
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldHaveSize
@@ -9,7 +9,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.client.getForEntity
 import org.springframework.boot.test.web.client.postForEntity
 import org.springframework.http.HttpStatus.*
-import smalltalk.backend.apply.*
+import smalltalk.backend.*
 import smalltalk.backend.exception.RoomExceptionSituationCode.DELETED
 import smalltalk.backend.exception.RoomExceptionSituationCode.FULL
 import smalltalk.backend.domain.room.RoomRepository

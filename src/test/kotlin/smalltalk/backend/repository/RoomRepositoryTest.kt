@@ -1,4 +1,4 @@
-package smalltalk.backend.apply.repository
+package smalltalk.backend.repository
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.ExpectSpec
@@ -7,7 +7,10 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest
-import smalltalk.backend.apply.*
+import smalltalk.backend.ID
+import smalltalk.backend.MEMBER_INIT
+import smalltalk.backend.MEMBER_LIMIT
+import smalltalk.backend.NAME
 import smalltalk.backend.config.property.RoomYamlProperties
 import smalltalk.backend.config.redis.RedisConfig
 import smalltalk.backend.exception.FullRoomException
